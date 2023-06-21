@@ -3,6 +3,7 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { MongooseModule } from '@nestjs/mongoose';
+import { PostsModule } from './posts/posts.module';
 
 @Module({
   imports: [
@@ -10,14 +11,15 @@ import { MongooseModule } from '@nestjs/mongoose';
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
-      useFactory: async (configService: ConfigService) =>{
+      useFactory: async (configService: ConfigService) => {
         return {
           uri: configService.get('DATABASE_URL'),
           useNewUrlParser: true,
           useUnifiedTopology: true,
-        }
-      }
-    })
+        };
+      },
+    }),
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
