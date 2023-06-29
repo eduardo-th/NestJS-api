@@ -9,7 +9,7 @@ export class PostsService {
   constructor(private readonly postRepository: PostRepository  ){}
     
   create(createPostDto: CreatePostDto) {
-    return `This action creates a post`;
+    return this.postRepository.createPost(createPostDto);
   }
 
   findAll() {
