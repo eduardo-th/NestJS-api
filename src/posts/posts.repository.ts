@@ -13,4 +13,11 @@ export class PostRepository {
         const savedPost = await createdPost.save()
         return savedPost
     }    
+    async findPostById(id: string): Promise<Post>{
+        const foundPost= await this.PostModel.findById(id)        
+        if (!foundPost){
+             throw new NotFoundException('Post not found')
+        }
+        return foundPost
+    }
 }
