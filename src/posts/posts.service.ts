@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './posts.repository';
+import { PaginationDto } from 'src/common/dto/pagination.dto';
 
 @Injectable()
 export class PostsService {
@@ -12,8 +13,9 @@ export class PostsService {
     return this.postRepository.createPost(createPostDto);
   }
 
-  findAll() {
-    return `This action returns all posts`;
+  findAll(paginationDto: PaginationDto) {
+    const { offset, limit } = paginationDto;
+    return this.postRepository.findAll(offset, limit);    
   }
 
   findOne(id: string) {

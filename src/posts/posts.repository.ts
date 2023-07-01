@@ -20,4 +20,11 @@ export class PostRepository {
         }
         return foundPost
     }
+    async findAll(offset: number, limit: number): Promise<Post[]> {
+        const allPosts = await this.PostModel.find().skip(offset).limit(limit).lean()
+        if(!allPosts.length){
+            throw new NotFoundException('Posts not found')
+        }
+        return allPosts
+    }
 }
