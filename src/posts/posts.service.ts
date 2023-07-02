@@ -23,8 +23,8 @@ export class PostsService {
     return this.postRepository.findPostById(id);
   }
 
-  update(id: number, updatePostDto: UpdatePostDto) {
-    return `This action updates a #${id} post`;
+  update(id: string, updatePostDto: UpdatePostDto) {
+    return this.postRepository.updatePost(id,updatePostDto)
   }
 
   remove(id: string): Promise<Post> {
