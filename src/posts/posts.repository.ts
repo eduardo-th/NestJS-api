@@ -27,4 +27,11 @@ export class PostRepository {
         }
         return allPosts
     }
+    async deleteById(id: string): Promise<Post>{
+        const deletedPost = await this.PostModel.findByIdAndRemove(id)
+        if(!deletedPost){
+            throw new NotFoundException('Post not found')
+        }
+        return deletedPost
+    }
 }

@@ -3,6 +3,7 @@ import { CreatePostDto } from './dto/create-post.dto';
 import { UpdatePostDto } from './dto/update-post.dto';
 import { PostRepository } from './posts.repository';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
+import { Post } from './entities/post.entity';
 
 @Injectable()
 export class PostsService {
@@ -26,7 +27,7 @@ export class PostsService {
     return `This action updates a #${id} post`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} post`;
+  remove(id: string): Promise<Post> {
+    return this.postRepository.deleteById(id)
   }
 }
