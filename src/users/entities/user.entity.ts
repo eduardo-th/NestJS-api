@@ -29,7 +29,7 @@ export class User extends Document{
     @Prop({required: true, unique: true})
     email: string
 
-    @Prop({default: 'somthing about me'})
+    @Prop({default: 'something about me'})
     about: string
 
     @Prop({type: avatarSchema, default: {}})
