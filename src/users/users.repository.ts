@@ -26,7 +26,6 @@ export class UsersRepository{
     async userExist(username: string, email: string): Promise<boolean>{
         const userFound = await this.userModel.findOne()
         .or([{username}, {email}])
-
-        return userFound === null
+        return userFound !== null
     }
 }
