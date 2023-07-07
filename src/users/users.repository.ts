@@ -1,4 +1,4 @@
-import { ConflictException, Injectable} from "@nestjs/common";
+import { ConflictException, Injectable, NotFoundException} from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./entities/user.entity";
 import { FilterQuery, Model } from "mongoose";
@@ -21,6 +21,13 @@ export class UsersRepository{
         const newUser = new this.userModel({...userFilterQuery, password: hash})
         const savedUser = await newUser.save()
         return savedUser
+    }
+    async findById(id: string): Promise<User>{
+        const foundUser = await this.userModel.findById(id)
+        if (!foundUser){
+            throw new NotFoundException(`user with id ${id} not found`)
+        }
+        return foundUser
     }
 
     async userExist(username: string, email: string): Promise<boolean>{
