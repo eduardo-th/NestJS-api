@@ -2,7 +2,7 @@ import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import mongoose, { Document } from 'mongoose';
 
 @Schema({_id: false})
-class Avatar extends Document{
+export class Avatar extends Document{
 
     @Prop({default: 'https://res.cloudinary.com/dqfvb6su5/image/upload/v1666904254/social-media/avatars/mustache2_ptqjy3.jpg'})
     url: string
