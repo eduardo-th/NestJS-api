@@ -26,6 +26,6 @@ export class AuthService {
         }
         const jwtToken = this.jwtService.sign(userInfo)
 
-        return jwtToken
+        return {jwtToken}
     }
 }
