@@ -1,5 +1,7 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
-import { Document } from 'mongoose';
+import mongoose, { Document } from 'mongoose';
+import { Comment } from 'src/comments/entities/comment.entity';
+import { User } from 'src/users/entities/user.entity';
 
 @Schema({ _id: false })
 export class Image extends Document {
@@ -29,15 +31,11 @@ export class Post extends Document {
   @Prop({ type: ImageSchema })
   image: Image;
 
-  /*
-    @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Author', required: true  })
-    author: Author--->author schema
-   
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: 'Usert', required: true })
+  author: User;
 
-    @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
-    comments: Comment[]--->comments schema
-
-*/
+  @Prop({ type: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Comment' }] })
+  comments: Comment[];
 }
 
 export const PostSchema = SchemaFactory.createForClass(Post);

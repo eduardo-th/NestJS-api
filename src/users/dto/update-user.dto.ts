@@ -1,24 +1,28 @@
-import { IsNotEmpty, IsOptional, IsString, IsUrl, ValidateNested } from "class-validator"
+import {
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  IsUrl,
+  ValidateNested,
+} from 'class-validator';
 
-export class Avatar{
+export class Avatar {
+  @IsString()
+  @IsUrl()
+  @IsNotEmpty()
+  url: string;
 
-    @IsString()
-    @IsUrl()
-    @IsNotEmpty()
-    url: string
-
-    @IsString()
-    @IsNotEmpty()
-    filename: string
+  @IsString()
+  @IsNotEmpty()
+  filename: string;
 }
 
 export class UpdateUserDto {
+  @IsOptional()
+  @IsString()
+  about: string;
 
-    @IsOptional()
-    @IsString()
-    about: string
-    
-    @IsOptional()
-    @ValidateNested()
-    avatar: Avatar
+  @IsOptional()
+  @ValidateNested()
+  avatar: Avatar;
 }
