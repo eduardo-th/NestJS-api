@@ -55,4 +55,13 @@ export class PostsService {
     }
     return deletedPost;
   }
+
+  async removeComment(postId: string, commentId: string): Promise<Post> {
+    const updatedPost = await this.PostModel.findByIdAndUpdate(
+      { _id: postId },
+      { $pull: { comments: commentId } },
+      { new: true },
+    );
+    return updatedPost;
+  }
 }

@@ -64,4 +64,13 @@ export class UsersService {
     }
     return deletedUser;
   }
+
+  async removeComment(usertId: string, commentId: string): Promise<User> {
+    const updatedUser = await this.userModel.findByIdAndUpdate(
+      { _id: usertId },
+      { $pull: { comments: commentId } },
+      { new: true },
+    );
+    return updatedUser;
+  }
 }

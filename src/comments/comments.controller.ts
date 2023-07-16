@@ -14,6 +14,7 @@ import { CreateCommentDto } from './dto/create-comment.dto';
 import { UpdateCommentDto } from './dto/update-comment.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { LoginRequest } from 'src/auth/entity/login-request';
+import { Comment } from './entities/comment.entity';
 
 @Controller('posts/:postId/comments')
 export class CommentsController {
@@ -41,8 +42,14 @@ export class CommentsController {
     return this.commentsService.update(+id, updateCommentDto);
   }
 
+  @UseGuards(AuthGuard)
   @Delete(':id')
-  remove(@Param('id') id: string) {
-    return this.commentsService.remove(+id);
+  remove(
+    @Req() req: LoginRequest,
+    @Param('postId') postId: string,
+    @Param('id') id: string,
+  ): Promise<Comment>
+   {
+    return this.commentsService.remove(req.user.id, postId, id);
   }
 }

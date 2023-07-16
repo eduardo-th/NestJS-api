@@ -49,7 +49,13 @@ export class CommentsService {
     return `This action updates a #${id} comment`;
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} comment`;
+  async remove(userId: string, postId: string, id: string): Promise<Comment> {
+    await this.postService.removeComment(postId, id);
+    await this.userService.removeComment(userId, id);
+
+    const removeComment = await this.commentModel.findByIdAndRemove(id);
+    console.log(removeComment);
+
+    return removeComment;
   }
 }
