@@ -33,8 +33,8 @@ export class CommentsController {
   } 
 
   @Get(':id')
-  findOne(@Param('id') id: string) {
-    return this.commentsService.findOne(+id);
+  findOne(@Param('id') id: string): Promise<Comment> {
+    return this.commentsService.findOne(id);
   }
 
   @UseGuards(AuthGuard)

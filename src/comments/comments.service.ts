@@ -41,8 +41,9 @@ export class CommentsService {
     return saveComment;
   }  
 
-  findOne(id: number) {
-    return `This action returns a #${id} comment`;
+  async findOne(id: string): Promise <Comment> {
+    const foundComment = await this.commentModel.findById(id)
+    return foundComment;
   }
 
   async update(id: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
