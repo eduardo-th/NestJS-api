@@ -45,8 +45,10 @@ export class CommentsService {
     return `This action returns a #${id} comment`;
   }
 
-  update(id: number, updateCommentDto: UpdateCommentDto) {
-    return `This action updates a #${id} comment`;
+  async update(id: string, updateCommentDto: UpdateCommentDto): Promise<Comment> {
+    const updatedComment = await this.commentModel.findByIdAndUpdate(id, updateCommentDto, { new: true })
+
+    return updatedComment;
   }
 
   async remove(userId: string, postId: string, id: string): Promise<Comment> {

@@ -37,9 +37,10 @@ export class CommentsController {
     return this.commentsService.findOne(+id);
   }
 
+  @UseGuards(AuthGuard)
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto) {
-    return this.commentsService.update(+id, updateCommentDto);
+  update(@Param('id') id: string, @Body() updateCommentDto: UpdateCommentDto): Promise<Comment> {
+    return this.commentsService.update(id, updateCommentDto);
   }
 
   @UseGuards(AuthGuard)
