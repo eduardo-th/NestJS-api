@@ -5,13 +5,32 @@ import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { Post } from './entities/post.entity';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
+import { CloudinaryService } from 'src/cloudinary/cloudinary.service';
+import { UploadApiErrorResponse, UploadApiResponse } from 'cloudinary'
 
 @Injectable()
 export class PostsService {
-  constructor(@InjectModel(Post.name) private PostModel: Model<Post>) {}
+  constructor(
+    @InjectModel(Post.name) private PostModel: Model<Post>,
+    private cloudinaryService: CloudinaryService
+  ) { }
 
-  async create(createPostDto: CreatePostDto): Promise<Post> {
-    const createdPost = new this.PostModel(createPostDto);
+  async create(createPostDto: CreatePostDto, image: Express.Multer.File,): Promise<Post> {
+    const { title, body, author } = createPostDto
+    let uploadResponse: UploadApiErrorResponse | UploadApiResponse
+    if (image) {
+      uploadResponse = await this.cloudinaryService.uploadToCloudinary(image)
+    }
+    const createdPost = new this.PostModel({
+      title,
+      body,
+      author,
+      tags: createPostDto.tags.split(','),
+      image: {
+        url: uploadResponse.url,
+        filename: uploadResponse.public_id.split('/')[1]
+      }
+    });
     const savedPost = await createdPost.save();
     return savedPost;
   }
