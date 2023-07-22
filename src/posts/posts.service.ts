@@ -28,7 +28,7 @@ export class PostsService {
       tags: createPostDto.tags.split(','),
       image: {
         url: uploadResponse.url,
-        filename: uploadResponse.public_id.split('/')[1]
+        filename: uploadResponse.public_id
       }
     });
     const savedPost = await createdPost.save();
@@ -69,6 +69,9 @@ export class PostsService {
 
   async remove(id: string): Promise<Post> {
     const deletedPost = await this.PostModel.findByIdAndRemove(id);
+    const imagePublicId: string = deletedPost.image.filename
+    this.cloudinaryService.deleteFromCloudinary(imagePublicId)
+
     if (!deletedPost) {
       throw new NotFoundException('Post not found');
     }

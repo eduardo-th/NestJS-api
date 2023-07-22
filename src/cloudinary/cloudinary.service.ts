@@ -20,4 +20,8 @@ export class CloudinaryService {
             Readable.from(image.buffer).pipe(imageStream)
         })
     }
+
+    async deleteFromCloudinary(imagePublicId: string) {
+        return Cloudinary.uploader.destroy(imagePublicId)
+    }
 }
