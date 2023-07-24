@@ -27,8 +27,8 @@ export class PostsService {
       author,
       tags: createPostDto.tags.split(','),
       image: {
-        url: uploadResponse.url,
-        filename: uploadResponse.public_id
+        url: uploadResponse? uploadResponse.url : '',
+        filename: uploadResponse? uploadResponse.public_id : ''
       }
     });
     const savedPost = await createdPost.save();
