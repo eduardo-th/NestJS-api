@@ -17,6 +17,7 @@ import { UpdatePostDto } from './dto/update-post.dto';
 import { PaginationDto } from 'src/common/dto/pagination.dto';
 import { AuthGuard } from 'src/auth/auth.guard';
 import { FileInterceptor } from '@nestjs/platform-express';
+import { IsPostAuthorGuard } from 'src/auth/is.post.author.guard';
 
 @Controller('posts')
 export class PostsController {
@@ -39,13 +40,14 @@ export class PostsController {
     return this.postsService.findOne(id);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, IsPostAuthorGuard)
+  @UseInterceptors(FileInterceptor('image'))
   @Patch(':id')
-  update(@Param('id') id: string, @Body() updatePostDto: UpdatePostDto) {
+  update(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.update(id, updatePostDto);
   }
 
-  @UseGuards(AuthGuard)
+  @UseGuards(AuthGuard, IsPostAuthorGuard)
   @Delete(':id')
   remove(@Param('id') id: string) {
     return this.postsService.remove(id);
