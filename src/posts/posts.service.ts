@@ -15,6 +15,11 @@ export class PostsService {
     private cloudinaryService: CloudinaryService
   ) { }
 
+  test(){
+    this.cloudinaryService.deleteFromCloudinary('NestJS-API/ixkgvkuhcy6nh8eazrfs')    
+    return '--DONE--'    
+  }
+
   async create(createPostDto: CreatePostDto, image: Express.Multer.File,): Promise<Post> {
     const { title, body, author } = createPostDto
     let uploadResponse: UploadApiErrorResponse | UploadApiResponse
@@ -55,10 +60,26 @@ export class PostsService {
     return foundPost;
   }
 
-  async update(id: string, updatePostDto: UpdatePostDto): Promise<Post> {
+  async update(id: string, updatePostDto: UpdatePostDto, image: Express.Multer.File): Promise<Post> {
+    let uploadResponse: UploadApiErrorResponse | UploadApiResponse
+    const currentPost: Post = await this.PostModel.findById(id)
+    if (image) {
+      uploadResponse = await this.cloudinaryService.uploadToCloudinary(image)
+
+      if (currentPost.image.filename) {
+        this.cloudinaryService.deleteFromCloudinary(currentPost.image.filename)
+      }
+    }
     const updatedPost = await this.PostModel.findByIdAndUpdate(
       id,
-      updatePostDto,
+      {
+        ...updatePostDto,
+        tags: updatePostDto.tags ? updatePostDto.tags.split(',') : currentPost.tags,
+        image: {
+          url: uploadResponse ? uploadResponse.url : currentPost.image.url,
+          filename: uploadResponse ? uploadResponse.public_id : currentPost.image.filename
+        }
+      },
       { new: true },
     );
     if (!updatedPost) {

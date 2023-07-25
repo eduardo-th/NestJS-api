@@ -44,7 +44,7 @@ export class PostsController {
   @UseInterceptors(FileInterceptor('image'))
   @Patch(':id')
   update(@Param('id') id: string, @UploadedFile() file: Express.Multer.File, @Body() updatePostDto: UpdatePostDto) {
-    return this.postsService.update(id, updatePostDto);
+    return this.postsService.update(id, updatePostDto, file);
   }
 
   @UseGuards(AuthGuard, IsPostAuthorGuard)
